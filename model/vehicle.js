@@ -1,12 +1,12 @@
-import {  model, Schema} from 'mongoose';
-var ownerSchema = Schema({
+var mongoose = require('mongoose');
+var ownerSchema = mongoose.Schema({
     dni: String,
     name: String,
     birthDate: Date
 });
 
 
-var vehicleSchema = Schema({
+var vehicleSchema = mongoose.Schema({
     plate: {
         type: String,
         rquired: true
@@ -23,13 +23,13 @@ var vehicleSchema = Schema({
     },
     owner: ownerSchema,
     brand:{
-        type:Schema.brand.codeBrand, ref:'brand',
+        type:mongoose.Schema.Types.ObjectId, ref:'brand',
         require:true
     },
     model:{
-        type:Schema.model.codeModel, ref:'model',
+        type:mongoose.Schema.Types.ObjectId, ref:'model',
         require:true
     }
 });
 
-var vehicle = module.exports = model('vehicle', vehicleSchema);
+var vehicle = module.exports = mongoose.model('vehicle', vehicleSchema);

@@ -10,16 +10,20 @@ router.get('/', function (req, res) {
 
 
 // Import contact controller
-var modelController = require('../model/model');
+var modelController = require('../controller/modelController');
+var brandController = require('../controller/brandController');
 // Contact routes
 router.route('/models')
     .get(modelController.index)
     .post(modelController.new);
+
 router.route('/models/:codeModel')
     .get(modelController.view)
     .patch(modelController.update)
     .put(modelController.update)
     .delete(modelController.delete);
 
+router.route('/brand')
+    .post(brandController.new);
 
 module.exports = router
