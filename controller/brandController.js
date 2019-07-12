@@ -1,6 +1,6 @@
-Brand = require('../model/brand');
+var Brand = require('../model/brand');
 exports.index = function (req, res) {
-    Brand.get(function (err, contacts) {
+    Brand.find(function (err, brands) {
         if (err) {
             res.json({
                 status: "error",
@@ -9,8 +9,8 @@ exports.index = function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Contacts retrieved successfully",
-            data: contacts
+            message: "Brands retrieved successfully",
+            data: brands
         });
     });
 };
@@ -29,3 +29,15 @@ res.json({
         });
     });
 };
+
+exports.view = function (req, res) {
+    Brand.findById(req.params.codeBrand, function (err, brand) {
+        if (err)    
+            res.send(err);
+        res.json({
+            message: 'Brand details loading..',
+            data: brand
+        });
+    });
+};
+// 
