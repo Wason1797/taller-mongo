@@ -24,6 +24,10 @@ router.route('/models/:codeModel')
     .delete(modelController.delete);
 
 router.route('/brand')
-    .post(brandController.new);
+    .post(brandController.new)
+    .get(brandController.index);
+
+router.route('/brands/:codeBrand')
+    .get(brandController.view);
 
 module.exports = router
