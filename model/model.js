@@ -2,16 +2,18 @@ var mongoose = require('mongoose');
 
 var modelSchema = mongoose.Schema({
     codeModel: {
-        type:String,
-        require:true
+        type: String,
+        require: true
     },
     name: {
-        type:String,
-        require:true
+        type: String,
+        require: true
     },
     codeBrand: {
-        type:mongoose.Schema.Types.ObjectId, ref:'brand',
-        require:true
+        type: mongoose.Schema.Types.ObjectId, ref: 'brand',
+        require: true
     }
 });
-var Model = module.exports = mongoose.model('model', modelSchema);
+var Model = mongoose.model('model', modelSchema);
+
+module.exports = Model;

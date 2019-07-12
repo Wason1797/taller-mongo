@@ -1,8 +1,8 @@
-Model = require('../model/model');
+var Model = require('../model/model');
 
 
 exports.index = function (req, res) {
-    Model.get(function (err, models) {
+    Model.find(function (err, models) {
         if (err) {
             res.json({
                 status: "error",
@@ -65,7 +65,7 @@ exports.update = function (req, res) {
 // Handle delete model
 exports.delete = function (req, res) {
     Model.remove({
-        _id: req.params.contact_id
+        _id: req.params.model_id
     }, function (err, model) {
         if (err)
             res.send(err);
