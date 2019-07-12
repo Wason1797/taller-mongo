@@ -1,5 +1,6 @@
-var mongoose = require('mongoose');
-var brandSchema = mongoose.Schema({
+import {  model, Schema} from 'mongoose';
+
+var brandSchema = Schema({
     codeBrand: {
         type:String,
         require:true
@@ -9,4 +10,4 @@ var brandSchema = mongoose.Schema({
         require:true
     }
 });
-var Brand = module.exports = mongoose.model('brand', brandSchema);
+var Brand = module.exports = model('brand', brandSchema);

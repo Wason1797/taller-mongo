@@ -1,5 +1,4 @@
-import { Schema } from 'mongoose';
-
+import {  model, Schema} from 'mongoose';
 var ownerSchema = Schema({
     dni: String,
     name: String,
@@ -22,8 +21,15 @@ var vehicleSchema = Schema({
     transmision: {
         type: String
     },
-
-    owner: ownerSchema
-
-
+    owner: ownerSchema,
+    brand:{
+        type:Schema.brand.codeBrand, ref:'brand',
+        require:true
+    },
+    model:{
+        type:Schema.model.codeModel, ref:'model',
+        require:true
+    }
 });
+
+var vehicle = module.exports = model('vehicle', vehicleSchema);
