@@ -3,9 +3,18 @@ let express = require('express');
 // Import Body parser
 let bodyParser = require('body-parser');
 // Import Mongoose
-let mongoose = require('mongoose');
+const mysql = require('mysql');
 // Initialise the app
 let app = express();
+const mc = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'taller'
+});
+ 
+// connect to database
+mc.connect();
 
 // Import routes
 let apiRoutes = require("./routes/routes");
@@ -14,15 +23,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-// Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://localhost/vehicledb', { useNewUrlParser: true });
-var db = mongoose.connection;
-
-// Added check for DB connection
-if (!db)
-    console.log("Error connecting db")
-else
-    console.log("Db connected successfully")
 
 // Setup server port
 var port = process.env.PORT || 8080;

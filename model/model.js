@@ -1,19 +1,9 @@
-var mongoose = require('mongoose');
+var sql = require('../DB/db.js');
 
-var modelSchema = mongoose.Schema({
-    codeModel: {
-        type: String,
-        require: true
-    },
-    name: {
-        type: String,
-        require: true
-    },
-    codeBrand: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'brand',
-        require: true
-    }
-});
-var Model = mongoose.model('model', modelSchema);
+var model = function (model){
+    this.codeModel = model.codeModel;
+    this.codeBrand =model.codeBrand;
+    this.name = model.name;
+};
 
-module.exports = Model;
+module.exports = model;
