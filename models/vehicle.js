@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 var ownerSchema = mongoose.Schema({
     dni: String,
     name: String,
@@ -22,14 +23,8 @@ var vehicleSchema = mongoose.Schema({
         type: String
     },
     owner: ownerSchema,
-    brand:{
-        type:mongoose.Schema.Types.ObjectId, ref:'brand',
-        require:true
-    },
-    model:{
-        type:mongoose.Schema.Types.ObjectId, ref:'model',
-        require:true
-    }
+    brand: { type: mongoose.Schema.Types.ObjectId, ref: 'brand' },
+    model: { type: mongoose.Schema.Types.ObjectId, ref: 'model' }
 });
 
 var vehicle = module.exports = mongoose.model('vehicle', vehicleSchema);

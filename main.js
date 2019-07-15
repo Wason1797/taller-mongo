@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 // Connect to Mongoose and set connection variable
+mongoose.set('useCreateIndex', true);
 mongoose.connect('mongodb://localhost/vehicledb', { useNewUrlParser: true });
 var db = mongoose.connection;
 

@@ -1,29 +1,24 @@
 // Initialize express router
 let router = require('express').Router();
-// Set default API response
+
 router.get('/', function (req, res) {
     res.json({
         status: 'API Its Working',
-
     });
 });
 
 
-// Import contact controller
-var modelController = require('../controller/modelController');
-var brandController = require('../controller/brandController');
-// Contact routes
+var modelController = require('../controllers/modelController');
+var brandController = require('../controllers/brandController');
+
 router.route('/models')
     .get(modelController.index)
-    .post(modelController.new);
+    .post(modelController.new)
 
 router.route('/models/:codeModel')
     .get(modelController.view)
-    .patch(modelController.update)
-    .put(modelController.update)
-    .delete(modelController.delete);
 
-router.route('/brand')
+router.route('/brands')
     .post(brandController.new)
     .get(brandController.index);
 
