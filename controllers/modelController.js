@@ -25,29 +25,29 @@ exports.index = function (req, res) {
 
 exports.new = function (req, res) {
     var model = new Model();
-
-
     model.name = req.body.name ? req.body.name : model.name;
     model.codeModel = req.body.codeModel;
     Brand.findOne({ codeBrand: req.body.codeBrand }, function (err, brand) {
         if (err) {
             res.status(400).send(err);
+            return
         }
         else {
             model.brand = brand._id;
         }
+        console.log(model)
+        model.save(function (err) {
+            if (err) {
+                res.status(400).json(err);
+            }
+            else {
+                res.status(200).json(model);
+            }
 
+        });
     });
 
-    model.save(function (err) {
-        if (err) {
-            res.status(400).json(err);
-        }
-        else {
-            res.status(200).json(model);
-        }
 
-    });
 };
 
 exports.view = function (req, res) {

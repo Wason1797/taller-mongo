@@ -10,6 +10,7 @@ router.get('/', function (req, res) {
 
 var modelController = require('../controllers/modelController');
 var brandController = require('../controllers/brandController');
+var vehicleController = require('../controllers/vehicleController');
 
 router.route('/models')
     .get(modelController.index)
@@ -24,5 +25,20 @@ router.route('/brands')
 
 router.route('/brands/:codeBrand')
     .get(brandController.view);
+
+router.route('/vehicles')
+    .post(vehicleController.new)
+
+router.route('/vehicles/:plate')
+    .get(vehicleController.findByPlate)
+
+router.route('/vehicles/brand/:brand')
+    .get(vehicleController.findByBrand)
+
+router.route('/vehicles/model/:model')
+    .get(vehicleController.findByModel)
+
+router.route('/vehicles/owner/')
+    .get(vehicleController.findByModel)
 
 module.exports = router
