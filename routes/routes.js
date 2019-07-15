@@ -28,6 +28,7 @@ router.route('/brands/:codeBrand')
 
 router.route('/vehicles')
     .post(vehicleController.new)
+    .get(vehicleController.findAll)
 
 router.route('/vehicles/:plate')
     .get(vehicleController.findByPlate)
@@ -39,6 +40,9 @@ router.route('/vehicles/model/:model')
     .get(vehicleController.findByModel)
 
 router.route('/vehicles/owner/')
-    .get(vehicleController.findByModel)
+    .put(vehicleController.updateOwner)
+
+router.route('/vehicles/owner/age/:age')
+    .get(vehicleController.findByAge)
 
 module.exports = router

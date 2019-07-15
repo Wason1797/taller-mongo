@@ -9,7 +9,7 @@ exports.index = function (req, res) {
             });
         }
         else {
-            if (brands == null) {
+            if (brands.length == 0) {
                 res.status(404).json()
             }
             else {

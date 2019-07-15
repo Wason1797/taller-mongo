@@ -2,6 +2,8 @@ var Model = require('../models/model');
 var Brand = require('../models/brand');
 var Vehicle = require('../models/vehicle')
 
+var moment = require('moment')
+
 
 exports.new = function (req, res) {
     var vehicle = new Vehicle();
@@ -137,19 +139,62 @@ exports.findByModel = function (req, res) {
 };
 
 
-// exports.updateOwner = function (req, res) {
+exports.updateOwner = function (req, res) {
 
-//     Vehicle.findOneAndUpdate({ plate: req.body.plate },
-//         { owner: req.body.owner },
-//         { new: true },
-//         function (err, vehicle) {
-//             if (err) {
-//                 res.status(400).send(err);
-//             }
-//             else {
-//                 res.json(vehicles);
+    Vehicle.findOneAndUpdate({ plate: req.body.plate },
+        { owner: req.body.owner },
+        { new: true },
+        function (err, vehicle) {
+            if (err) {
+                res.status(400).send(err);
+            }
+            else {
+                res.json(vehicle);
 
-//             }
-//         });
+            }
+        });
 
-// };
+};
+
+exports.findAll = function (req, res) {
+
+    Vehicle.find(function (err, vehicles) {
+
+        if (err) {
+            res.status(400).json({
+                status: "error",
+                message: err,
+            });
+        }
+        else {
+            if (vehicles.length == 0) {
+                res.status(404).json()
+            }
+            else {
+                res.json(vehicles);
+            }
+        }
+    });
+};
+
+exports.findByAge = function (req, res) {
+    let date = moment().subtract(req.params.age, 'years');
+    console.log(date.toISOString())
+
+    Vehicle.find({
+        'owner.birthDate': { $lte: date.toISOString() }
+    }, function (err, vehicles) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        else {
+            if (vehicles.length == 0) {
+                res.status(404).json({ "message": "No vehicles found" })
+            }
+            else {
+                res.json(vehicles);
+            }
+        }
+    });
+
+};
