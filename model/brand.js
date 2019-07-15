@@ -1,8 +1,8 @@
 var sql = require('../DB/db.js');
 
-var brand = function (brand) {
+var Brand = function (brand) {
     this.codeBrand = brand.codeBrand;
     this.name = brand.name;
 };
 
-module.exports = brand;
+module.exports = Brand;
