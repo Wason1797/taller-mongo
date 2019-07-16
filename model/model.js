@@ -1,8 +1,30 @@
-var sql = require('../DB/db.js');
+const Sequelize = require('sequelize');
+const Model = Sequelize.Model;
+const sequelize = new Sequelize('taller', 'root', 'root', {
+    dialect: 'mysql'
+})
+class Modelo extends Model {}
+Modelo.init({
+    codeModel: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    codeBrand: {
+        type: Sequelize.STRING,
+    },
+    name: {
+        type: Sequelize.STRING
+            // allowNull defaults to true
+    }
+}, {
+    sequelize,
+    modelName: 'model',
+    freezeTableName: true,
+    timestamps: false
+        // options
+});
 
-var model = function (model){
-    this.codeModel = model.codeModel;
-    this.codeBrand = model.codeBrand;
-    this.name = model.name;
-};
-module.exports = model;
+module.exports = {
+    Modelo
+}

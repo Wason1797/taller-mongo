@@ -1,35 +1,41 @@
-var mongoose = require('mongoose');
-var ownerSchema = mongoose.Schema({
-    dni: String,
-    name: String,
-    birthDate: Date
-});
-
-
-var vehicleSchema = mongoose.Schema({
+const Sequelize = require('sequelize');
+const Model = Sequelize.Model;
+const sequelize = new Sequelize('taller', 'root', 'root', {
+    dialect: 'mysql'
+})
+class Vehicle extends Model { }
+Vehicle.init({
     plate: {
-        type: String,
-        rquired: true
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true
     },
     year: {
-        type: Number,
-        required: true
+        type: Sequelize.DATE
     },
     engine: {
-        type: Number
+        type: Sequelize.STRING
     },
     transmision: {
-        type: String
+        type: Sequelize.STRING
     },
-    owner: ownerSchema,
-    brand:{
-        type:mongoose.Schema.Types.ObjectId, ref:'brand',
-        require:true
+    dni: {
+        type: Sequelize.STRING
     },
-    model:{
-        type:mongoose.Schema.Types.ObjectId, ref:'model',
-        require:true
+    codebrand: {
+        type: Sequelize.STRING
+    },
+    codemodel: {
+        type: Sequelize.STRING
     }
-});
+}, {
+        sequelize,
+        modelName: 'vehicle',
+        freezeTableName: true,
+        timestamps: false
+        // options
+    });
 
-var vehicle = module.exports = mongoose.model('vehicle', vehicleSchema);
+module.exports = {
+    Vehicle
+}

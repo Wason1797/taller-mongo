@@ -2,6 +2,7 @@
 let express = require('express');
 // Import Body parser
 let bodyParser = require('body-parser');
+const Sequelize = require('sequelize');
 // Import Mongoose
 const mysql = require('mysql');
 // Initialise the app

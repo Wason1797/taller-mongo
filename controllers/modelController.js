@@ -1,64 +1,56 @@
-var Model = require('../model/model');
-var Brand = require('../model/brand');
-var sql = require('../DB/db.js');
+const { Modelo } = require('../model/model');
+const { Brand } = require('../model/brand');
 
 exports.index = function (req, res) {
-    sql.query("Select * from model",function (err, models) {
-        if (err) {
-            res.status(400).json({
-                status: "error",
-                message: err,
-            });
-        }
-        else {
-            if (models == null) {
-                res.status(404).json()
-            }
-            else {
-                res.status(200).json(models);
-            }
-
-        }
-
-    });
+    Modelo.findAll({
+    })
+        .then(busca => {
+            res.json(busca)
+        })
 };
 
 exports.new = function (req, res) {
-    var model = new Model(req.body);
-    sql.query("Select * from brand where codebrand = ?",req.body.codeBrand, function (err, brand) {
-        if (err) {
-            res.status(400).send(err);
+    let body = req.body;
+    let codeBrand;
+    Brand.findAll({
+        where: {
+            codeBrand: req.body.codeBrand
+        }
+    }).then(brand => {
+        if (brand.length == 0) {
+            res.status(404).json({ "message": "No brand" });
+            return;
         }
         else {
-            model.brand = brand._id;
+            codeBrand = brand[0].codeBrand;
         }
-
-    });
-
-    sql.query("INSERT INTO model set ?", model,function (err) {
-        if (err) {
-            res.status(400).json(err);
-        }
-        else {
-            res.status(200).json(model);
-        }
-
-    });
+        Modelo.create({
+            codeModel: body.codeModel,
+            codeBrand: codeBrand,
+            name: body.name
+        })
+            .then((created) => {
+                return res.json(created);
+            }).catch(() => {
+                return res.status(500).json({ "message": "the model already exists" });
+            })
+    })
 };
 
 exports.view = function (req, res) {
-    sql.query("Select * from model where codemodel = ?",req.params.codeModel, function (err, model) {
-        if (err) {
-            res.status(400).send(err);
+    let id = req.params.codeModel
+    Modelo.findAll({
+        where: {
+            codeModel: id
         }
-        else {
-            if (model == null) {
-                res.status(404).json()
+    })
+        .then(model => {
+            if (brand.length == 0) {
+                res.status(404).json({ "message": "No Model" });
+                return;
             }
             else {
                 res.json(model);
             }
-        }
-
-    });
+        })
 };
