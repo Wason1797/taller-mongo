@@ -27,7 +27,7 @@ exports.new = function (req, res) {
         if (owner.length == 0) {
             Owner.create({
                 dni: ownerNew.dni,
-                name: owner.name,
+                name: ownerNew.name,
                 birthDate: ownerNew.birthDate
             })
                 .then((created) => {
@@ -181,18 +181,50 @@ exports.findByModel = function (req, res) {
 
 exports.updateOwner = function (req, res) {
     let body = req.body;
-
-    Vehiculo.update({ dni: req.body.owner.dni }, {
+    let dni = req.body.owner.dni;
+    let ownerNew = req.body.owner;
+    Vehicle.findAll({
         where: {
             plate: req.body.plate
         }
-    }).then(buscaVehiculo => {
-
-        res.json(buscaVehiculo);
-
-    }).catch(() => {
-        return res.status(404).json();
     })
+        .then(vehicle => {
+            if (vehicle.length == 0) {
+                return res.status(404).json({ "messge": "No vehicle" });
+            }
+            else {
+                Owner.findAll({
+                    where: {
+                        dni: req.body.owner.dni
+                    }
+                }).then(owner => {
+                    if (owner.length == 0) {
+                        Owner.create({
+                            dni: ownerNew.dni,
+                            name: ownerNew.name,
+                            birthDate: ownerNew.birthDate
+                        })
+                            .then((created) => {
+                                dni = ownerNew.dni;
+                            }).catch(() => {
+                                return res.status(500).json({ "message": "the owner already exists" });
+                            })
+                    }
+                    else {
+                        dni = owner[0].dni;
+                    }
+                    Vehicle.update({ dni: dni }, {
+                        where: {
+                            plate: req.body.plate
+                        }
+                    }).then(vehicle => {
+                        res.json(vehicle);
+                    }).catch(() => {
+                        return res.status(404).json();
+                    })
+                })
+            }
+        })
 };
 
 exports.findAll = function (req, res) {
