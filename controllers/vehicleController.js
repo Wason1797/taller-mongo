@@ -241,33 +241,27 @@ exports.findAll = function (req, res) {
 };
 
 exports.findByAge = function (req, res) {
-    /*    let date = moment().subtract(req.params.age, 'years');
-        console.log(date.toISOString())
-        Owner.findAll({
+    let date = moment().subtract(req.params.age, 'years');
+    console.log(date.toISOString())
+    date.setFullYear(date.getFullYear() - id);
+    Vehicle.findAll({
+        include: [{
+            model: owner,
             where: {
-                birthDate: date.toISOString()
+                birthDate: {
+                    [Op.lt]: date.toISOString()
+                }
             }
-        })
-            .then(owner => {
-                if (owner.length == 0) {
-                    return res.status(404).json({ "messge": "No owner" });
-                }
-                else {
-                    for (i = 0; i < owner.length; i++) {
-                        Vehicle.findAll({
-                            where: {
-                                dni: owner.dni
-                            }
-                        }).then(vehicles => {
-                            if (vehicles.length == 0) {
-                                res.status(404).json({ "message": "No vehicle with brand name found" });
-                                return;
-                            }
-                            else {
-                                res.json(vehicles);
-                            }
-                        })
-                    }
-                }
-            })*/
+        }
+        ]
+    }).then(vehicle => {
+        if (vehicle[0] == undefined) {
+            res.status(404).json({ "message": "No vehicle" });
+        } else {
+            res.json(vehicle);
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).send("Error");
+    })
 };
