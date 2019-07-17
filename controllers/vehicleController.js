@@ -12,6 +12,13 @@ exports.new = function (req, res) {
     let codeBrand;
     let codeModel;
     let ownerNew = req.body.owner;
+    if (req.body.plate.length == 7) {
+        vehicle.plate = req.body.plate;
+    }
+    else {
+        res.status(400).send({ "message": "non a valid plate" });
+        return
+    }
     Owner.findAll({
         where: {
             dni: ownerNew.dni
@@ -173,20 +180,19 @@ exports.findByModel = function (req, res) {
 
 
 exports.updateOwner = function (req, res) {
+    let body = req.body;
 
-    Vehicle.findOneAndUpdate({ plate: req.body.plate },
-        { owner: req.body.owner },
-        { new: true },
-        function (err, vehicle) {
-            if (err) {
-                res.status(400).send(err);
-            }
-            else {
-                res.json(vehicle);
+    Vehiculo.update({ dni: req.body.owner.dni }, {
+        where: {
+            plate: req.body.plate
+        }
+    }).then(buscaVehiculo => {
 
-            }
-        });
+        res.json(buscaVehiculo);
 
+    }).catch(() => {
+        return res.status(404).json();
+    })
 };
 
 exports.findAll = function (req, res) {
@@ -203,33 +209,33 @@ exports.findAll = function (req, res) {
 };
 
 exports.findByAge = function (req, res) {
-    let date = moment().subtract(req.params.age, 'years');
-    console.log(date.toISOString())
-    Owner.findAll({
-        where: {
-            birthDate: date.toISOString()
-        }
-    })
-        .then(owner => {
-            if (owner.length == 0) {
-                return res.status(404).json({ "messge": "No owner" });
-            }
-            else {
-                for (i = 0; i < owner.length; i++) {
-                    Vehicle.findAll({
-                        where: {
-                            dni: owner.dni
-                        }
-                    }).then(vehicles => {
-                        if (vehicles.length == 0) {
-                            res.status(404).json({ "message": "No vehicle with brand name found" });
-                            return;
-                        }
-                        else {
-                            res.json(vehicles);
-                        }
-                    })
-                }
+    /*    let date = moment().subtract(req.params.age, 'years');
+        console.log(date.toISOString())
+        Owner.findAll({
+            where: {
+                birthDate: date.toISOString()
             }
         })
+            .then(owner => {
+                if (owner.length == 0) {
+                    return res.status(404).json({ "messge": "No owner" });
+                }
+                else {
+                    for (i = 0; i < owner.length; i++) {
+                        Vehicle.findAll({
+                            where: {
+                                dni: owner.dni
+                            }
+                        }).then(vehicles => {
+                            if (vehicles.length == 0) {
+                                res.status(404).json({ "message": "No vehicle with brand name found" });
+                                return;
+                            }
+                            else {
+                                res.json(vehicles);
+                            }
+                        })
+                    }
+                }
+            })*/
 };
