@@ -19,14 +19,26 @@ Vehicle.init({
     transmision: {
         type: Sequelize.STRING
     },
-    dni: {
-        type: Sequelize.STRING
-    },
     codebrand: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {
+            model: 'brand',
+            key: 'codeBrand'
+        }
     },
     codemodel: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {
+            model: 'model',
+            key: 'codeModel'
+        }
+    },
+    dni: {
+        type: Sequelize.STRING,
+        references: {
+            model: 'ower',
+            key: 'dni'
+        }
     }
 }, {
         sequelize,

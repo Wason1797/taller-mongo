@@ -3,7 +3,7 @@ const Model = Sequelize.Model;
 const sequelize = new Sequelize('taller', 'root', 'root', {
     dialect: 'mysql'
 })
-class Modelo extends Model {}
+class Modelo extends Model { }
 Modelo.init({
     codeModel: {
         type: Sequelize.STRING,
@@ -12,18 +12,22 @@ Modelo.init({
     },
     codeBrand: {
         type: Sequelize.STRING,
+        references: {
+            model: 'brand',
+            key: 'codeBrand'
+        }
     },
     name: {
         type: Sequelize.STRING
-            // allowNull defaults to true
+        // allowNull defaults to true
     }
 }, {
-    sequelize,
-    modelName: 'model',
-    freezeTableName: true,
-    timestamps: false
+        sequelize,
+        modelName: 'model',
+        freezeTableName: true,
+        timestamps: false
         // options
-});
+    });
 
 module.exports = {
     Modelo

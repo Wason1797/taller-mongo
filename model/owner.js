@@ -11,10 +11,10 @@ Owner.init({
         primaryKey: true
     },
     name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
     },
     birthDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
         // allowNull defaults to true
     }
 }, {
@@ -24,6 +24,7 @@ Owner.init({
         timestamps: false
         // options
     });
+
 
 module.exports = {
     Owner

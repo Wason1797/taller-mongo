@@ -3,9 +3,10 @@ const { Brand } = require('../model/brand');
 const { Vehicle } = require('../model/vehicle');
 const { Owner } = require('../model/owner');
 
-var moment = require('moment')
-
-
+var moment = require('moment');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+Vehicle.belongsTo(Owner, { foreignKey: 'dni' });
 exports.new = function (req, res) {
     let vehicle = req.body;
     let dni;
@@ -183,6 +184,7 @@ exports.updateOwner = function (req, res) {
     let body = req.body;
     let dni = req.body.owner.dni;
     let ownerNew = req.body.owner;
+    let vehicleUpdate;
     Vehicle.findAll({
         where: {
             plate: req.body.plate
@@ -193,6 +195,7 @@ exports.updateOwner = function (req, res) {
                 return res.status(404).json({ "messge": "No vehicle" });
             }
             else {
+                vehicleUpdate = vehicle;
                 Owner.findAll({
                     where: {
                         dni: req.body.owner.dni
@@ -218,7 +221,7 @@ exports.updateOwner = function (req, res) {
                             plate: req.body.plate
                         }
                     }).then(vehicle => {
-                        res.json(vehicle);
+                        res.json(vehicleUpdate);
                     }).catch(() => {
                         return res.status(404).json();
                     })
@@ -242,11 +245,10 @@ exports.findAll = function (req, res) {
 
 exports.findByAge = function (req, res) {
     let date = moment().subtract(req.params.age, 'years');
-    console.log(date.toISOString())
-    date.setFullYear(date.getFullYear() - id);
+    console.log(date.toISOString());
     Vehicle.findAll({
         include: [{
-            model: owner,
+            model: Owner,
             where: {
                 birthDate: {
                     [Op.lt]: date.toISOString()
